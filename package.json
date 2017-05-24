@@ -1,0 +1,25 @@
+{
+  "name": "wasabilib-for-node",
+  "version": "0.2.3",
+  "description": "A powerful porting of Zend Framework 2 WasabiLib. See http://www.wasabilib.org",
+  "author": "Norman Albusberger",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WasabiLib/wasabilib-for-node.git"
+  },
+  "keywords": [
+    "wasabilib",
+    "ajax nodejs",
+    "nodejs ajax module",
+    "ajax requests",
+    "ajax request"
+  ],
+  "preferGlobal": true,
+  "maintainers": [
+    {
+      "email": "norman@wasabilib.org",
+      "name": "norman"
+    }
+  ],
+  "license": "MIT"
+}
