@@ -541,7 +541,7 @@ Wasabi.prototype.ajax = function (config, callback) {
 	//the element which is triggering the request
 	var element = config.selector ? $(config.selector) : null;
 
-	$.ajax({
+	var jQueryConfig = {
 		type: type,
 		url: url,
 		data: data,
@@ -564,7 +564,13 @@ Wasabi.prototype.ajax = function (config, callback) {
 				}
 			}
 		}
-	})
+	}
+
+	if(config.contentType){
+		jQueryConfig.contentType = config.contentType;
+	}
+
+	$.ajax(jQueryConfig)
 		.done(function (serverResponse) {
 			if (!serverResponse[0].status) {
 				error = new Error('The server response is not a wasabilib response.');
