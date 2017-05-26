@@ -190,8 +190,8 @@ $.Wasabi.ajax({
         url: "/panel/main/ajaxtest",
         loaderId: "ajax-loader",
         data:{"param":"value"},
-    },function (serverResponse) {
-        console.log(serverResponse);
+    },function (error, serverResponse) {
+        console.log(error, serverResponse);
    }
 );
 
