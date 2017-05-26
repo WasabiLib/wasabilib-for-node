@@ -474,10 +474,13 @@ Wasabi.prototype.send = function (url, content, config) {
 
 	_self.ajax({
 		type: type,
-		url:url,
-		data:data,
-		loaderId:element.attr('data-ajax-loader'),
-	},function () {
+		url: url,
+		data: data,
+		loaderId: element.attr('data-ajax-loader'),
+	}, function (err) {
+		if(err){
+			console.log(err.message);
+		}
 		if (element.attr('data-disabletime') != undefined && element.attr('data-disabletime') == 'true') {
 			if (element.prop('tagName') === 'A') {
 				element.attr('href', element.attr('data-href')).removeAttr('data-href');
@@ -533,6 +536,7 @@ Wasabi.prototype.ajax = function (config, callback) {
 	var data = config.data;
 	var coding = 'json';
 	var ajaxLoader = config.loaderId ? $('#' + config.loaderId) : null;
+	var error = null;
 
 	//the element which is triggering the request
 	var element = config.selector ? $(config.selector) : null;
@@ -551,25 +555,37 @@ Wasabi.prototype.ajax = function (config, callback) {
 		error: function (response) {
 			console.log('The server response is not a wasabilib response.');
 			if (response.responseText) {
-				console.log('See response for details: ' + response.responseText);
+				error = new Error('See response for details: ' + response.responseText);
+				if (callback) {
+					return callback(error);
+				}
+				else {
+					console.log(error);
+				}
 			}
 		}
 	})
 		.done(function (serverResponse) {
 			if (!serverResponse[0].status) {
-				console.log('The server response is not a wasabilib response.');
-				return;
+				error = new Error('The server response is not a wasabilib response.');
+				if (callback) {
+					return callback(error);
+				}
+				else {
+					console.log(error);
+				}
 			}
-			_self.getNotificationCenter().notify(serverResponse); //notify the observing response types
-			_self.registerEventHandler(); //register new wasabi-ajax-elements in the DOM
-
+			if (!error) {
+				_self.getNotificationCenter().notify(serverResponse); //notify the observing response types
+				_self.registerEventHandler(); //register new wasabi-ajax-elements in the DOM
+			}
 			//shut off ajax loader element if there
 			if (ajaxLoader) {
 				ajaxLoader.hide();
 			}
 			//run the callback if it is set
 			if (callback) {
-				return callback(serverResponse);
+				return callback(error, serverResponse);
 			}
 		});
 };
