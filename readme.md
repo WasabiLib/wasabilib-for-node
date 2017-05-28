@@ -178,6 +178,7 @@ It could be necessary to send request with JavaScript instead of an element insi
     url: "path/to/server",
     data: your json data object you want to process
     loaderId: specify an element which is shown/hidden during request
+    contentType: default is 'application/x-www-form-urlencoded; charset=UTF-8'
  }
  ```
 
