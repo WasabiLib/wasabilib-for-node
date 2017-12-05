@@ -319,12 +319,15 @@ Wasabi.prototype.registerCommonEvents = function () {
  */
 Wasabi.prototype.registerEventHandler = function () {
 	var _self = this;
-
 	$('.wasabi-ajax-element').each(function (index) {
 		var element = $(this); //recent Element
 		var myEvent = element.attr('data-event');
 		var elementId = element.attr('id');
 		var callback = _self.getCallback(element.attr('data-cb'));
+
+		if (!element.attr('id')) {
+			throw new Error(element.prop('tagName') + ' needs an id attribute.');
+		}
 
 		if (!_self.registeredElements[elementId] && (element.attr('data-cb') == undefined || callback != undefined)) {
 			if (element.prop('tagName') === 'FORM') {
@@ -334,10 +337,7 @@ Wasabi.prototype.registerEventHandler = function () {
 			else if (element.prop('tagName') === 'A') {
 				callback = callback ? callback : _self.getCallback('link');
 				myEvent = myEvent ? myEvent : 'click';
-			} else if (element.hasClass('wasabi_suggest')) {
-				callback = callback ? callback : _self.getCallback('suggest');
-				myEvent = myEvent ? myEvent : 'keyup';
-			} else {
+			}  else {
 				callback = callback ? callback : _self.getCallback('button');
 				myEvent = myEvent ? myEvent : 'click';
 			}
@@ -347,10 +347,6 @@ Wasabi.prototype.registerEventHandler = function () {
 					//console.log('Event '+ myEvent + ' is not a valid event');
 				}
 				else {
-					if (!$(this).attr('id')) {
-						throw new Error(element.tagName + 'needs an id attribute.');
-					}
-					else {
 						$(document).on(myEvent, '#' + elementId, function (event) {
 							event.preventDefault();
 							callback.execute(event);
@@ -393,7 +389,7 @@ Wasabi.prototype.registerEventHandler = function () {
 								});
 							}
 						});
-					}
+
 				}
 				_self.registeredElements[elementId] = true;
 			}
@@ -493,39 +489,6 @@ Wasabi.prototype.send = function (url, content, config) {
 		}
 
 	});
-
-	/*
-	 //old code
-	 $.ajax({
-	 type: type,
-	 url: url,
-	 data: data,
-	 dataType: coding,
-	 beforeSend: function (xhr) {
-	 //put on ajax loader if one is there
-	 content.getElement().attr('data-ajax-loader') ? $('#' + content.getElement().attr('data-ajax-loader')).show() : null;
-	 }
-	 })
-	 .done(function (msg) {
-	 console.log(msg);
-	 _self.getNotificationCenter().notify(msg); //notify the observing response types
-	 _self.registerEventHandler();
-
-	 //shut off ajax loader if one is there
-	 content.getElement().attr('data-ajax-loader') ? $('#' + content.getElement().attr('data-ajax-loader')).hide() : null;
-
-	 if (content.getElement().attr('data-disabletime') != undefined && content.getElement().attr('data-disabletime') == 'true') {
-	 if (content.getElement().prop('tagName') === 'A') {
-	 content.getElement().attr('href', content.getElement().attr('data-href')).removeAttr('data-href');
-	 }
-	 if (content.getElement().prop('tagName') === 'FORM') {
-	 content.getElement().find('[type=submit]').prop('disabled', false);
-	 } else {
-	 content.getElement().prop('disabled', false);
-	 }
-	 }
-	 });
-	 */
 };
 
 Wasabi.prototype.ajax = function (config, callback) {
@@ -619,6 +582,11 @@ NotificationCenter.prototype.register = function (observer) {
 	observer.setExecuteRemoteProcedureCallManager(_self.wasabi.getExecuteRemoteProcedureCallManager());
 
 	_self.observers.push(observer);
+	if(observer.config){
+		if(observer.config.event){
+			_self.wasabi.registerEvent(observer.config.event);
+		}
+	}
 };
 
 /**
@@ -935,10 +903,10 @@ External_Form.prototype.getTransmissionCapableContent = function () {
 
 //-------------- Text Field ------------------------------------------
 /**
- * Constructor of Text_Field. It extracts the data of the value attribute.
+ * Constructor of TextField. It extracts the data of the value attribute.
  * @constructor
  */
-function Text_Field() {
+function TextField() {
 	DataExtractor.call(this);
 }
 
@@ -946,13 +914,13 @@ function Text_Field() {
  * Adds superclass methods.
  * @type {DataExtractor.prototype}
  */
-Text_Field.prototype = Object.create(DataExtractor.prototype);
+TextField.prototype = Object.create(DataExtractor.prototype);
 
 /**
  * Returns the content of the element value attribute.
  * @returns {*|string|array} All transmission capable data.
  */
-Text_Field.prototype.getTransmissionCapableContent = function () {
+TextField.prototype.getTransmissionCapableContent = function () {
 	var _self = this;
 	return {content: _self.getElement().val()};
 };
@@ -962,11 +930,11 @@ Text_Field.prototype.getTransmissionCapableContent = function () {
 //-----------   Initialization    ------------------------------------
 
 $(document).ready(function () {
-	/**
+	 /**
 	 * Initialize the wasabi to orchestrate the WasabiLib system.
 	 * @type {wasabi}
 	 */
-	wasabi = new Wasabi();
+	var wasabi = new Wasabi();
 	$.Wasabi = wasabi; //Setting up Wasabi to work under the jQuery namespace
 
 	/**
@@ -1048,7 +1016,7 @@ $(document).ready(function () {
 	/**
 	 * Callback for text fields to extract the informations from the value attribute.
 	 */
-	wasabi.addCallback(new Callback('text', new Text_Field()));
+	wasabi.addCallback(new Callback('text', new TextField()));
 
 
 	/**
