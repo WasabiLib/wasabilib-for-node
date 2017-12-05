@@ -824,9 +824,6 @@ TriggerEventManager.prototype.update = function (response) {
  * ---------------Common Response Handlers ---------------------------
  */
 
-
-
-
 //----    Data Extractors -----------------------------
 /**
  * Constructor of Form to extract data from a normal form element.

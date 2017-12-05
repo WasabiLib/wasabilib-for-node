@@ -81,9 +81,48 @@ res.send(response);
 
 
 ### DomManipulator
+Using the DomManipulator means changing elements in the DOM from server-side. 
+The DomManipulator takes 4 parameters:
 
-coming soon
+```
+ selector, propertyName, value, actionType
+```
+Action types are: 
+```
+const ACTION_TYPE_CSS
+const ACTION_TYPE_ADD_CLASS
+const ACTION_TYPE_REMOVE_CLASS
+const ACTION_TYPE_TOGGLE_CLASS
+const ACTION_TYPE_DROPZONE_DISCOVER
+const ACTION_TYPE_SHOW
+const ACTION_TYPE_REMOVE_ELEMENT
+const ACTION_TYPE_HIDE
+const ACTION_TYPE_SLIDEDOWN
+const ACTION_TYPE_FADEOUT
+const ACTION_TYPE_FADEIN
+const ACTION_TYPE_ATTR
+```
 
+The default action type is ``` WasabiLib.DomManipulator.ACTION_TYPE_CSS ```
+
+#### Examples
+
+
+```
+//Adding the following to the response results in changing the background-color css attribute of the selector #myDiv into green.
+let dmOne = new WasabiLib.DomManipulator('#myDiv','background-color','green');
+
+//Fades out #myDiv
+let dmTwo = new WasabiLib.DomManipulator('#myDiv',null,null,WasabiLib.DomManipulator.ACTION_TYPE_FADEOUT);
+
+//Changes the href attribute of #myLink to another value
+let dmThree = new WasabiLib.DomManipulator('#myLink','href','https://www.google.com',WasabiLib.DomManipulator.ACTION_TYPE_ATTR);
+
+//we still can do it all with one server response
+response.add([dmOne,dmTwo,dmThree]);
+res.send(response);
+
+```
 ### Alert
 
 ### TriggerEvent
