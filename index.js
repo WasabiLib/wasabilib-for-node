@@ -1,12 +1,11 @@
 'use strict';
-
-var Response = require('./Response');
 var ResponseType = require('./ResponseType');
 var GenericMessage = require('./GenericMessage');
 var InnerHtml = require('./InnerHtml');
 var DomManipulator = require('./DomManipulator');
 var TriggerEvent = require('./TriggerEvent');
 var Alert = require('./Alert');
+var Response = require('./Response');
 
 
 module.exports = {

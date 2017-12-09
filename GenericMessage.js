@@ -22,8 +22,16 @@ class GenericMessage extends ResponseType {
 		this.params = params;
 	}
 
+	/**
+	 * if any parameters must be configured before
+	 * calling the message method by the parental class
+	 * one can implement configure() to pre-configure the message
+	 */
+	configure(){
+	}
 
 	get message() {
+		this.configure();
 		return {
 			'selector': this.selector,
 			'actionType': this._actionType,

@@ -1,5 +1,7 @@
 'use strict';
 var ResponseType = require('./ResponseType');
+var GenericMessage = require('./GenericMessage');
+
 /**
  * The class is the container for all instances of ResponseTypes
  * you can add ResponseTypes with the add method or you can put them into an array and then give it to
@@ -10,45 +12,39 @@ var ResponseType = require('./ResponseType');
 
 let InnerHtml = require('./InnerHtml');
 
-class Response{
+class Response {
 
-	constructor(responseType){
+	constructor(responseType) {
 		this._responses = [];
-		if(Array.isArray(responseType)){
-			responseType.forEach((type) =>{
+		if (Array.isArray(responseType)) {
+			responseType.forEach((type) => {
 				this.add(type);
 			});
 		}
-		else{
-			if(responseType instanceof ResponseType){
-				this.add(responseType);
-			}
+		else {
+			this.add(responseType);
 		}
+
 	}
 
 	/**
 	 * @param response
 	 */
-	add(responseType){
-		if(Array.isArray(responseType)){
+	add(responseType) {
+		if (Array.isArray(responseType)) {
 			this._responses = this._responses.concat(responseType);
 		}
-		else{
-			//if(responseType instanceof ResponseType){
-				this._responses.push(responseType);
-		/*	}
-			else{
-				throw new Error('The given value is type of '+ typeof responseType+'. Not instance of Wasabilib.ResponseType');
-			}
-*/
+		else {
+			this._responses.push(responseType);
 		}
 		return this;
 	}
-	get responses(){
+
+	get responses() {
 		return this._responses;
 	}
 
-	toJSON(){
+	toJSON() {
 		let data = this.responses.map(response => response.data());
 		return data;
 	}

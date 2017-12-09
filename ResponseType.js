@@ -8,6 +8,13 @@ class ResponseType {
 		this.status = 200;
 	}
 
+	/**
+	 * should typically be overwritten
+	 */
+	get message(){
+
+	}
+
 	data() {
 		let data = {
 			'responseHandler': this.responseHandler,
