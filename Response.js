@@ -21,7 +21,7 @@ class Response {
 				this.add(type);
 			});
 		}
-		else {
+		else if(responseType){
 			this.add(responseType);
 		}
 
