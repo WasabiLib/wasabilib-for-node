@@ -1,7 +1,3 @@
-#Would you like to contribute?
-Please send a message to info@wasabilib.org
-
-
 # Documentation
 The WasabiLib project follows the approach to handle ajax requests and responses in a simple and convenient way. 
 It consists of a client side implementation of a notification center which handles recipients and server-side counterparts for the recipients called response types.
