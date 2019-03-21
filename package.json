@@ -1,7 +1,7 @@
 {
   "name": "wasabilib-for-node",
   "version": "0.2.9",
-  "description": "A powerful porting of Zend Framework 2 WasabiLib. See http://www.wasabilib.org",
+  "description": "Ajax requests and responses the easy way.",
   "author": "Norman Albusberger",
   "repository": {
     "type": "git",
