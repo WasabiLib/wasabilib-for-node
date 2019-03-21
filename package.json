@@ -21,5 +21,14 @@
       "name": "norman"
     }
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^4.0.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-uglify": "^3.0.2",
+    "prettier": "1.16.4",
+    "readable-stream": "^3.2.0",
+    "save-dev": "^2.0.0"
+  },
+  "dependencies": {}
 }
